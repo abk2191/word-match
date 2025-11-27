@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function Game() {
+function Game({ setGameStarted }) {
   const colors = [
     { name: "RED", hex: "#FF0000" },
     { name: "BLUE", hex: "#0000FF" },
@@ -237,9 +237,74 @@ function Game() {
                 <p style={{ fontSize: "24px", marginBottom: "30px" }}>
                   Final Score: {score}
                 </p>
+                <div className="game-btns">
+                  <button
+                    className="pushable"
+                    onClick={restartGame}
+                    style={{ marginTop: "10px" }}
+                  >
+                    <span className="shadow"></span>
+                    <span
+                      className="edge"
+                      style={{
+                        background:
+                          "linear-gradient(to right, hsl(120, 39%, 39%) 0%, hsl(120, 39%, 49%) 8%, hsl(120, 39%, 39%) 92%, hsl(120, 39%, 29%) 100%)",
+                      }}
+                    ></span>
+                    <span
+                      className="front"
+                      style={{ background: "hsl(120, 53%, 58%)" }}
+                    >
+                      Play Again
+                    </span>
+                  </button>
+                  <button
+                    className="pushable"
+                    onClick={() => setGameStarted(false)}
+                    style={{ marginTop: "10px" }}
+                  >
+                    <span className="shadow"></span>
+                    <span
+                      className="edge"
+                      style={{
+                        background:
+                          "linear-gradient(to right, hsl(120, 39%, 39%) 0%, hsl(120, 39%, 49%) 8%, hsl(120, 39%, 39%) 92%, hsl(120, 39%, 29%) 100%)",
+                      }}
+                    ></span>
+                    <span
+                      className="front"
+                      style={{ background: "hsl(120, 53%, 58%)" }}
+                    >
+                      End Game
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Buttons - only show when game is active */}
+          {gameActive && (
+            <div className="game-area-parts-button">
+              <div className="yes-and-no-btn-div">
                 <button
                   className="pushable"
-                  onClick={restartGame}
+                  onClick={() => handleAnswer("yes")}
+                >
+                  <span className="shadow"></span>
+                  <span className="edge"></span>
+                  <span className="front"> Yes </span>
+                </button>
+                <button className="pushable" onClick={() => handleAnswer("no")}>
+                  <span className="shadow"></span>
+                  <span className="edge"></span>
+                  <span className="front"> No </span>
+                </button>
+              </div>
+              <div className="end-game-btn-div">
+                <button
+                  className="pushable"
+                  onClick={() => setGameStarted(false)}
                   style={{ marginTop: "10px" }}
                 >
                   <span className="shadow"></span>
@@ -254,26 +319,10 @@ function Game() {
                     className="front"
                     style={{ background: "hsl(120, 53%, 58%)" }}
                   >
-                    Play Again
+                    End Game
                   </span>
                 </button>
               </div>
-            )}
-          </div>
-
-          {/* Buttons - only show when game is active */}
-          {gameActive && (
-            <div className="game-area-parts-button">
-              <button className="pushable" onClick={() => handleAnswer("yes")}>
-                <span className="shadow"></span>
-                <span className="edge"></span>
-                <span className="front"> Yes </span>
-              </button>
-              <button className="pushable" onClick={() => handleAnswer("no")}>
-                <span className="shadow"></span>
-                <span className="edge"></span>
-                <span className="front"> No </span>
-              </button>
             </div>
           )}
         </div>
