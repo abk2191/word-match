@@ -1,3 +1,7 @@
+body {
+  background-color: gray;
+}
+
 .game-container {
   width: 100%;
   height: 100vh;
@@ -9,7 +13,8 @@
 .game-area {
   height: 600px;
   width: 600px;
-  border: 1px solid black;
+  border-radius: 15px;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +25,7 @@
 .game-area-parts-button {
   height: 250px;
   width: 500px;
-  border: 1px solid black;
+  gap: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,16 +34,78 @@
 .game-area-parts-word {
   height: 250px;
   width: 500px;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.game-area-parts-word h1 {
+  font-family: "Science Gothic", sans-serif;
+}
+
 .game-button {
   height: 50px;
   width: 200px;
+  border-radius: 10px;
+  font-size: 22px;
+  border: 1px solid green;
+  background-color: green;
+  color: white;
+}
+
+.game-button-no {
+  height: 50px;
+  width: 200px;
+  border-radius: 10px;
+  font-size: 22px;
+  border: 1px solid red;
+  background-color: red;
+  color: white;
+}
+
+.score-div {
+  height: 40px;
+}
+
+.feedback-div {
+  height: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Feedback Animation */
+.feedback-animation {
+  animation: floatUp 1s ease-in-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: scale(0.5) translateY(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.2) translateY(-10px);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.1) translateY(-20px);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1) translateY(-30px);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.9) translateY(-40px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.8) translateY(-50px);
+    opacity: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -58,6 +125,11 @@
   }
 
   .game-button {
+    height: 50px;
+    width: 150px;
+  }
+
+  .game-button-no {
     height: 50px;
     width: 150px;
   }
