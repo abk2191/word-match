@@ -13,7 +13,7 @@ body {
 .game-area {
   height: 600px;
   width: 600px;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -77,6 +77,34 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.timer-div {
+  height: 30px;
+  margin-top: 30px;
+}
+
+.game-over {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.game-over h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-family: "Inter", sans-serif;
+}
+
+.game-over p {
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: #222;
+  font-family: "Inter", sans-serif;
 }
 
 /* Feedback Animation */
@@ -220,5 +248,18 @@ body {
 
   .pushable {
     width: 120px;
+  }
+
+  .game-over {
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .game-over h2 {
+    font-size: 24px;
+  }
+
+  .game-over p {
+    font-size: 20px;
   }
 }
