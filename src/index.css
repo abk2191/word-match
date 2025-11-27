@@ -42,6 +42,7 @@ body {
 
 .game-area-parts-word h1 {
   font-family: "Science Gothic", sans-serif;
+  font-size: 65px;
 }
 
 .game-button {
@@ -52,6 +53,7 @@ body {
   border: 1px solid green;
   background-color: green;
   color: white;
+  cursor: pointer;
 }
 
 .game-button-no {
@@ -62,6 +64,7 @@ body {
   border: 1px solid red;
   background-color: red;
   color: white;
+  cursor: pointer;
 }
 
 .score-div {
@@ -112,6 +115,10 @@ body {
   .game-area {
     width: 100%;
     max-width: 370px;
+  }
+
+  .game-area-parts-word h1 {
+    font-size: 40px;
   }
 
   .game-area-parts-word {

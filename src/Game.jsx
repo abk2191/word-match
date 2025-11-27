@@ -130,10 +130,10 @@ function Game() {
       <div className="game-container">
         <div className="game-area">
           <div className="game-area-parts-word">
-            <h1 style={{ color: hex, fontSize: "65px" }}>{word}</h1>
+            <h1 style={{ color: hex }}>{word}</h1>
             <div className="feedback-div">
               <p
-                style={{ fontSize: "24px", margin: "20px 0" }}
+                style={{ fontSize: "54px", margin: "20px 0" }}
                 className={showFeedback ? "feedback-animation" : ""}
               >
                 {feedback}
