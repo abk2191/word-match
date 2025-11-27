@@ -133,14 +133,25 @@ function Game() {
             <h1 style={{ color: hex }}>{word}</h1>
             <div className="feedback-div">
               <p
-                style={{ fontSize: "54px", margin: "20px 0" }}
+                style={{
+                  fontSize: "54px",
+                  margin: "20px 0",
+                }}
                 className={showFeedback ? "feedback-animation" : ""}
               >
                 {feedback}
               </p>
             </div>
             <div className="score-div">
-              <p style={{ fontSize: "20px", margin: "10px 0" }}>
+              <p
+                style={{
+                  fontSize: "20px",
+                  margin: "10px 0",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: "bold",
+                  color: "blue",
+                }}
+              >
                 Score: {score}
               </p>
             </div>
