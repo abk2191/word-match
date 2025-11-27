@@ -157,14 +157,15 @@ function Game() {
             </div>
           </div>
           <div className="game-area-parts-button">
-            <button className="game-button" onClick={() => handleAnswer("yes")}>
-              Yes
+            <button className="pushable" onClick={() => handleAnswer("yes")}>
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front"> Yes </span>
             </button>
-            <button
-              className="game-button-no"
-              onClick={() => handleAnswer("no")}
-            >
-              No
+            <button className="pushable" onClick={() => handleAnswer("no")}>
+              <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front"> No </span>
             </button>
           </div>
         </div>
