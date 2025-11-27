@@ -11,7 +11,6 @@ function Game() {
     { name: "PINK", hex: "#FFC0CB" },
     { name: "BROWN", hex: "#A52A2A" },
     { name: "BLACK", hex: "#000000" },
-    { name: "WHITE", hex: "#FFFFFF" },
     { name: "GRAY", hex: "#808080" },
     { name: "CYAN", hex: "#00FFFF" },
     { name: "MAGENTA", hex: "#FF00FF" },
