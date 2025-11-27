@@ -218,13 +218,7 @@ body {
     max-width: 350px;
   }
 
-  .game-button {
-    height: 50px;
-    width: 150px;
-  }
-
-  .game-button-no {
-    height: 50px;
-    width: 150px;
+  .pushable {
+    width: 120px;
   }
 }
