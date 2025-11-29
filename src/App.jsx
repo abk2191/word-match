@@ -3,6 +3,7 @@ import Game from "./Game";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
+  const [scoreStorage, setScoreStorage] = useState([]);
 
   const handleStartGame = () => {
     setGameStarted(true);
@@ -36,7 +37,11 @@ function App() {
             </button>
           </div>
         ) : (
-          <Game setGameStarted={setGameStarted} />
+          <Game
+            setGameStarted={setGameStarted}
+            scoreStorage={scoreStorage}
+            setScoreStorage={setScoreStorage}
+          />
         )}
       </div>
     </>

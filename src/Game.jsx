@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function Game({ setGameStarted }) {
+function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
   const colors = [
     { name: "RED", hex: "#FF0000" },
     { name: "BLUE", hex: "#0000FF" },
@@ -27,8 +27,12 @@ function Game({ setGameStarted }) {
   const [timeLeft, setTimeLeft] = useState(60);
   const [gameActive, setGameActive] = useState(true);
 
+  const [showGameDisplay, setShowGameDisplay] = useState(true);
+
   const intervalRef = useRef(null);
   const gameTimerRef = useRef(null);
+  const scoreRef = useRef(0);
+  const endedRef = useRef(false);
 
   function getWord() {
     if (!gameActive) return;
@@ -98,10 +102,18 @@ function Game({ setGameStarted }) {
       (answer === "yes" && match) || (answer === "no" && !match);
 
     if (isCorrect) {
-      setScore((prevScore) => prevScore + 1);
+      setScore((prev) => {
+        const newScore = prev + 1;
+        scoreRef.current = newScore;
+        return newScore;
+      });
       setFeedback("👍");
     } else {
-      setScore((prevScore) => Math.max(0, prevScore - 1));
+      setScore((prev) => {
+        const newScore = Math.max(0, prev - 1);
+        scoreRef.current = newScore;
+        return newScore;
+      });
       setFeedback("👎");
     }
 
@@ -124,8 +136,13 @@ function Game({ setGameStarted }) {
   const startGameTimer = () => {
     gameTimerRef.current = setInterval(() => {
       setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          endGame();
+        if (prevTime < 1) {
+          setShowGameDisplay(false);
+
+          setTimeout(() => {
+            endGame(); // <-- safe now
+          }, 0);
+
           return 0;
         }
         return prevTime - 1;
@@ -135,7 +152,12 @@ function Game({ setGameStarted }) {
 
   // End the game
   const endGame = () => {
+    if (endedRef.current) return; // <- guard
+    endedRef.current = true; // <- lock it
+
+    setScoreStorage((prev) => [...prev, scoreRef.current]);
     setGameActive(false);
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -146,12 +168,14 @@ function Game({ setGameStarted }) {
 
   // Restart the game
   const restartGame = () => {
+    endedRef.current = false;
     setScore(0);
     setTimeLeft(60);
     setGameActive(true);
     setFeedback(null);
     setShowFeedback(false);
     setAnswered(false);
+    setShowGameDisplay(true);
 
     // Clear any existing intervals
     if (intervalRef.current) {
@@ -188,49 +212,67 @@ function Game({ setGameStarted }) {
         <div className="game-area">
           <div className="game-area-parts-word">
             {/* Timer Display */}
-            <div className="timer-div">
-              <p
-                style={{
-                  fontSize: "20px",
-                  margin: "10px 0",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: "bold",
-                  color: timeLeft <= 10 ? "red" : "blue",
-                }}
-              >
-                Time: {timeLeft}s
-              </p>
-            </div>
+            {showGameDisplay && (
+              <div className="game-display">
+                <div className="timer-div">
+                  <p
+                    style={{
+                      fontSize: "20px",
+                      margin: "10px 0",
+                      fontFamily: "Inter, sans-serif",
+                      fontWeight: "bold",
+                      color: timeLeft <= 10 ? "red" : "blue",
+                    }}
+                  >
+                    Time: {timeLeft}s
+                  </p>
+                </div>
 
-            <h1 style={{ color: hex }}>{word}</h1>
-            <div className="feedback-div">
-              <p
-                style={{
-                  fontSize: "54px",
-                  margin: "20px 0",
-                }}
-                className={showFeedback ? "feedback-animation" : ""}
-              >
-                {feedback}
-              </p>
-            </div>
-            <div className="score-div">
-              <p
-                style={{
-                  fontSize: "20px",
-                  margin: "10px 0",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: "bold",
-                  color: "blue",
-                }}
-              >
-                Score: {score}
-              </p>
-            </div>
+                <h1 style={{ color: hex }}>{word}</h1>
+                <div className="feedback-div">
+                  <p
+                    style={{
+                      fontSize: "54px",
+                      margin: "20px 0",
+                    }}
+                    className={showFeedback ? "feedback-animation" : ""}
+                  >
+                    {feedback}
+                  </p>
+                </div>
+                <div className="score-div">
+                  <p
+                    style={{
+                      fontSize: "20px",
+                      margin: "10px 0",
+                      fontFamily: "Inter, sans-serif",
+                      fontWeight: "bold",
+                      color: "blue",
+                    }}
+                  >
+                    Score: {score}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Game Over Screen */}
             {!gameActive && (
               <div className="game-over">
+                <div>
+                  {scoreStorage.length > 0 && (
+                    <div className="score-history">
+                      <h3>Scores:</h3>
+                      <ul>
+                        {scoreStorage.map((storedScore, index) => (
+                          <li key={index}>
+                            Game {index + 1}: {storedScore}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
                 <h2 style={{ color: "#333", marginBottom: "20px" }}>
                   Game Over!
                 </h2>
