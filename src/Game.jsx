@@ -220,8 +220,10 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage, firstScore }) {
   }, []);
 
   const showScore = () => {
-    setShowScores((prev) => !prev);
-    setDisplayScores(true);
+    setTimeout(() => {
+      setShowScores((prev) => !prev);
+      setDisplayScores(true);
+    }, 150);
   };
 
   return (
