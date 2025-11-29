@@ -300,7 +300,7 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage, firstScore }) {
                                     color: "blueviolet",
                                   }}
                                 >
-                                  Scores:
+                                  SCORES:
                                 </h3>
                                 <ul>
                                   {scoreStorage.map((storedScore, index) => (

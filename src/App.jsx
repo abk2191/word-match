@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Game from "./Game";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [scoreStorage, setScoreStorage] = useState([]);
+  const [scoreStorage, setScoreStorage] = useState(() => {
+    const saved = localStorage.getItem("scores");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("scores", JSON.stringify(scoreStorage));
+  }, [scoreStorage]);
 
   const handleStartGame = () => {
     setGameStarted(true);
