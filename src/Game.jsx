@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
+function Game({ setGameStarted, scoreStorage, setScoreStorage, firstScore }) {
   const colors = [
     { name: "RED", hex: "#FF0000" },
     { name: "BLUE", hex: "#0000FF" },
@@ -26,13 +26,19 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
   const [gameActive, setGameActive] = useState(true);
-
   const [showGameDisplay, setShowGameDisplay] = useState(true);
+  const [showScores, setShowScores] = useState(false);
+  const [displayScores, setDisplayScores] = useState(false);
 
   const intervalRef = useRef(null);
   const gameTimerRef = useRef(null);
   const scoreRef = useRef(0);
   const endedRef = useRef(false);
+
+  const handleDisplayScores = () => {
+    setDisplayScores(false);
+    setShowScores((prev) => !prev);
+  };
 
   function getWord() {
     if (!gameActive) return;
@@ -77,10 +83,15 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
 
         // Wait a moment to show feedback, then get new word
         setTimeout(() => {
+          if (!gameActive) return;
           setShowFeedback(false);
           setTimeout(() => {
+            // ⛔ STOP BEFORE GETTING NEW WORD
+            if (!gameActive) return;
             setFeedback(null);
             getWord();
+            // ⛔ DO NOT START A NEW INTERVAL IF GAME ENDED
+            if (!gameActive) return;
             resetInterval(); // Restart interval for the new word
           }, 100);
         }, 1000);
@@ -122,11 +133,14 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
 
     // Clear feedback after 1 second and get new word
     setTimeout(() => {
+      if (!gameActive) return;
       setShowFeedback(false);
       setTimeout(() => {
+        if (!gameActive) return;
         setFeedback(null);
         getWord();
         // Reset the interval AFTER getting the new word
+        if (!gameActive) return;
         resetInterval();
       }, 100);
     }, 1000);
@@ -138,7 +152,6 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
       setTimeLeft((prevTime) => {
         if (prevTime < 1) {
           setShowGameDisplay(false);
-
           setTimeout(() => {
             endGame(); // <-- safe now
           }, 0);
@@ -206,6 +219,11 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
     };
   }, []);
 
+  const showScore = () => {
+    setShowScores((prev) => !prev);
+    setDisplayScores(true);
+  };
+
   return (
     <>
       <div className="game-container">
@@ -259,25 +277,58 @@ function Game({ setGameStarted, scoreStorage, setScoreStorage }) {
             {/* Game Over Screen */}
             {!gameActive && (
               <div className="game-over">
-                <div>
-                  {scoreStorage.length > 0 && (
-                    <div className="score-history">
-                      <h3>Scores:</h3>
-                      <ul>
-                        {scoreStorage.map((storedScore, index) => (
-                          <li key={index}>
-                            Game {index + 1}: {storedScore}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                <button className="pushable" onClick={showScore}>
+                  <span className="shadow"></span>
+                  <span className="edge"></span>
+                  <span className="front"> Scores </span>
+                </button>
+
+                {displayScores && (
+                  <div className="backdrop" onClick={handleDisplayScores}>
+                    {showScores && (
+                      <div className="scores-div">
+                        {scoreStorage.length > 0 &&
+                          (() => {
+                            const highestScore = Math.max(...scoreStorage);
+
+                            return (
+                              <div className="score-history">
+                                <h3
+                                  style={{
+                                    color: "blueviolet",
+                                  }}
+                                >
+                                  Scores:
+                                </h3>
+                                <ul>
+                                  {scoreStorage.map((storedScore, index) => (
+                                    <div className="list-div">
+                                      <li
+                                        key={index}
+                                        style={{
+                                          color:
+                                            storedScore === highestScore
+                                              ? "blue"
+                                              : "lightgreen",
+                                        }}
+                                      >
+                                        Game {index + 1}: {storedScore}
+                                      </li>
+                                    </div>
+                                  ))}
+                                </ul>
+                              </div>
+                            );
+                          })()}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <h2 style={{ color: "#333", marginBottom: "20px" }}>
                   Game Over!
                 </h2>
                 <p style={{ fontSize: "24px", marginBottom: "30px" }}>
-                  Final Score: {score}
+                  Final Score: {scoreRef.current}
                 </p>
                 <div className="game-btns">
                   <button
